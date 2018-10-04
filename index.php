@@ -14,15 +14,18 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
 <?php require_once "template/default/header.php"; ?>
 
-<?php if ($rbac->hasPrivilege("index")) { ?>
-	<h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>.</h1>
-	<p>Selamat datang di aplikasi.</p>
-	<p>
-	    <a href="reset_password.php" class="btn btn-warning">Reset password Anda</a><br>
-	    <a href="logout.php" class="btn btn-danger">Sign Out akun Anda</a>
-	</p>
+<?php if ($rbac->hasPrivilege("index")) { ?>	
+	<?php
+	if (file_exists($module_file)) {
+		require_once $module_file;
+	} else if (empty($module_file)) {
+		require_once "template/default/welcome.php";
+	} else {
+		require_once "template/default/error_404.php";
+	}
+	?>
 <?php } else { ?>
-	<?php require_once 'template/default/error_permission.php'; ?>
+	<?php require_once "template/default/error_permission.php"; ?>
 <?php } ?>
 
 <?php require_once "template/default/footer.php"; ?>
