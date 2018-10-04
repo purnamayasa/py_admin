@@ -15,11 +15,11 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 <?php require_once "template/default/header.php"; ?>
 
 <?php if ($rbac->hasPrivilege("index")) { ?>	
-	<?php
-	if (file_exists($module_file)) {
-		require_once $module_file;
-	} else if (empty($module_file)) {
+	<?php	
+	if (empty($module_file)) {
 		require_once "template/default/welcome.php";
+	} else if (file_exists($module_file)) {
+		require_once $module_file;
 	} else {
 		require_once "template/default/error_404.php";
 	}
