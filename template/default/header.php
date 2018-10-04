@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>py_admin</title>
 </head>
 <body>

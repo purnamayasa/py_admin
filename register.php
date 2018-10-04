@@ -13,6 +13,7 @@ $password_err = isset($_SESSION["password_err"]) ? $_SESSION["password_err"] : '
 $confirm_password_err = isset($_SESSION["confirm_password_err"]) ? $_SESSION["confirm_password_err"] : '';
 ?>
 
+<?php require_once "template/default/header.php"; ?>
 
 <h2>Daftar</h2>
 <p>Silahkan ketik informasi Anda untuk membuat akun.</p>
@@ -53,6 +54,8 @@ $confirm_password_err = isset($_SESSION["confirm_password_err"]) ? $_SESSION["co
     </table>
     <p>Sudah punya akun? <a href="login.php">Login disini</a>.</p>
 </form>
+
+<?php require_once "template/default/footer.php"; ?>
 
 <?php
 

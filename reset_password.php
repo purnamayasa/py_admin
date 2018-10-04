@@ -11,6 +11,8 @@ $new_password_err = isset($_SESSION["new_password_err"]) ? $_SESSION["new_passwo
 $confirm_password_err = isset($_SESSION["confirm_password_err"]) ? $_SESSION["confirm_password_err"] : '';
 ?>
 
+<?php require_once "template/default/header.php"; ?>
+
 <h2>Reset Password</h2>
 <p>Silahkan ketikkan informasi Anda untuk reset password.</p>
 <form action="reset_password_process.php" method="post"> 
@@ -41,6 +43,8 @@ $confirm_password_err = isset($_SESSION["confirm_password_err"]) ? $_SESSION["co
         </tr>
     </table>
 </form>
+
+<?php require_once "template/default/footer.php"; ?>
 
 <?php
 

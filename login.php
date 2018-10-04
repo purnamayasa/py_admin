@@ -14,6 +14,8 @@ $username_err = isset($_SESSION["username_err"]) ? $_SESSION["username_err"] : "
 $password_err = isset($_SESSION["password_err"]) ? $_SESSION["password_err"] : "";
 ?>
 
+<?php require_once "template/default/header.php"; ?>
+
 <form action="login_process.php" method="post">
     <h2>Login</h2>
     <p>Silahkan ketikan informasi login Anda.</p>
@@ -42,6 +44,8 @@ $password_err = isset($_SESSION["password_err"]) ? $_SESSION["password_err"] : "
     </table>
     <p>Tidak memiliki login? <a href="register.php">Daftar sekarang</a>.</p>
 </form>
+
+<?php require_once "template/default/footer.php"; ?>
 
 <?php
 

@@ -12,7 +12,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 }
 ?>
 
-<?php require_once "template/default/header.php";; ?>
+<?php require_once "template/default/header.php"; ?>
 
 <?php if ($rbac->hasPrivilege("index")) { ?>
 	<h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>.</h1>
@@ -25,4 +25,4 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 	<?php require_once 'template/default/error_permission.php'; ?>
 <?php } ?>
 
-<?php require_once "template/default/footer.php";; ?>
+<?php require_once "template/default/footer.php"; ?>
