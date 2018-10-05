@@ -6,14 +6,14 @@ session_start();
 
 require_once "include/core.php";
  
-if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+if (!isset($_SESSION["rbac_loggedin"]) || $_SESSION["rbac_loggedin"] !== true) {
     header("location: login.php");
     exit;
 }
 
 require_once "template/default/header.php";
 
-if ($rbac->hasPrivilege("index")) { 
+if (isset($rbac) && $rbac->hasPrivilege("index")) { 
 
 	if (empty($module_file)) {
 

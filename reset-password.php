@@ -4,7 +4,7 @@ ini_set("display_errors", 1);
 
 session_start();
 
-if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+if (!isset($_SESSION["rbac_loggedin"]) || $_SESSION["rbac_loggedin"] !== true) {
     header("location: login.php");
     exit;
 }

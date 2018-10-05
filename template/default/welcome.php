@@ -1,4 +1,4 @@
-<h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>.</h1>
+<h1>Hi, <b><?php echo htmlspecialchars($_SESSION["rbac_username"]); ?></b>.</h1>
 <p>Selamat datang di aplikasi.</p>
 <p>
     <a href="reset_password.php" class="btn btn-warning">Reset password Anda</a><br>

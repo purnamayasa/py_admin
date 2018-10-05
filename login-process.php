@@ -60,10 +60,10 @@ if (isset($_POST["submit"]) && $_POST["submit"] == 'login') {
 
                         if (password_verify($password, $hashed_password)) {                            
 
-                            $_SESSION["loggedin"] = true;
-                            $_SESSION["user_id"] = $user_id;
-                            $_SESSION["username"] = $username;                            
-                            $_SESSION["password"] = $hashed_password;   
+                            $_SESSION["rbac_loggedin"] = true;
+                            $_SESSION["rbac_user_id"] = $user_id;
+                            $_SESSION["rbac_username"] = $username;                           
+                            $_SESSION["rbac_password"] = $hashed_password;
                             
                             header("location: index.php");
                             exit;
@@ -74,11 +74,13 @@ if (isset($_POST["submit"]) && $_POST["submit"] == 'login') {
 
                         }
                     }
+                    
                 } else {
 
                     $_SESSION["username_err"] = "Tidak ditemukan akun dengan username ini.";
 
                 }
+
             } else {
 
                 echo "Terjadi kesalahan, silahkan coba lagi!.";
