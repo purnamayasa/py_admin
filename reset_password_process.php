@@ -14,7 +14,7 @@ require_once "config/database.php";
 $new_password = $confirm_password = "";
 $new_password_err = $confirm_password_err = "";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if (isset($_POST["submit"]) && $_POST["submit"] == 'reset') {
  
     if (empty(trim($_POST["new_password"]))) {
 
@@ -49,12 +49,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         if ($stmt = mysqli_prepare($link, $sql)) {
 
-            mysqli_stmt_bind_param($stmt, "si", $param_password, $param_id);
+            $stmt->bind_param("si", $param_password, $param_id);
             
             $param_password = password_hash($new_password, PASSWORD_DEFAULT);
             $param_id = $_SESSION["user_id"];
             
-            if (mysqli_stmt_execute($stmt)) {
+            if ($stmt->execute()) {
 
                 session_destroy();
                 header("location: login.php");
@@ -66,13 +66,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 exit;
 
             }
+
+            $stmt->close();
+
         }
-        
-        mysqli_stmt_close($stmt);
+                
     }
     
     mysqli_close($link);
-}
 
-header("location: reset_password.php");
-exit;
+    header("location: reset_password.php");
+    exit;
+
+}

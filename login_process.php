@@ -44,19 +44,19 @@ if (isset($_POST["submit"]) && $_POST["submit"] == 'login') {
         
         if ($stmt = mysqli_prepare($link, $sql)) {
 
-            mysqli_stmt_bind_param($stmt, "s", $param_username);
+            $stmt->bind_param("s", $param_username);
             
             $param_username = $username;
             
-            if (mysqli_stmt_execute($stmt)) {
+            if ($stmt->execute()) {
 
-                mysqli_stmt_store_result($stmt);
+                $stmt->store_result();
                 
-                if (mysqli_stmt_num_rows($stmt) == 1) {     
+                if ($stmt->num_rows() == 1) {     
 
-                    mysqli_stmt_bind_result($stmt, $user_id, $username, $hashed_password);
+                    $stmt->bind_result($user_id, $username, $hashed_password);
 
-                    if (mysqli_stmt_fetch($stmt)) {
+                    if ($stmt->fetch()) {
 
                         if (password_verify($password, $hashed_password)) {                            
 
@@ -67,15 +67,16 @@ if (isset($_POST["submit"]) && $_POST["submit"] == 'login') {
                             
                             header("location: index.php");
                             exit;
+
                         } else {
 
-                            $_SESSION["password_err"] = "Password yang Anda ketikkan tidak sesuai.";
+                            $_SESSION["password_err"] = "Password yang Anda ketikan tidak sesuai.";
 
                         }
                     }
                 } else {
 
-                    $_SESSION["username_err"] = "Tidak ditemukan login dengan username ini.";
+                    $_SESSION["username_err"] = "Tidak ditemukan akun dengan username ini.";
 
                 }
             } else {
@@ -84,13 +85,16 @@ if (isset($_POST["submit"]) && $_POST["submit"] == 'login') {
                 exit;
 
             }
+
+            $stmt->close();
+
         }
-        
-        mysqli_stmt_close($stmt);
+                
     }
     
     mysqli_close($link);
-}
 
-header("location: login.php");
-exit;
+    header("location: login.php");
+    exit;
+    
+}

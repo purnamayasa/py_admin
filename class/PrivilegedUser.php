@@ -40,7 +40,7 @@ class PrivilegedUser extends User
 
                     $pu = new PrivilegedUser($this->link);
 
-                    while ($stmt->fetch()) {                        
+                    while ($stmt->fetch()) {
                         $pu->user_id = $user_id;
                         $pu->username = $username;
                         $pu->password = $password;

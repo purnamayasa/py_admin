@@ -18,7 +18,7 @@ $_SESSION["password_err"] = "";
 $_SESSION["confirm_password_err"] = "";
  
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if (isset($_POST["submit"]) && $_POST["submit"] == 'daftar') {
 
     if (empty(trim($_POST["username"]))) {
 
@@ -30,17 +30,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         if ($stmt = mysqli_prepare($link, $sql)) {
 
-            mysqli_stmt_bind_param($stmt, "s", $param_username);
+            $stmt->bind_param("s", $param_username);
             
             $param_username = trim($_POST["username"]);
             
-            if (mysqli_stmt_execute($stmt)) {
+            if ($stmt->execute()) {
 
-                mysqli_stmt_store_result($stmt);
+                $stmt->store_result();
                 
-                if (mysqli_stmt_num_rows($stmt) == 1) {
+                if ($stmt->num_rows() == 1) {
 
-                    $_SESSION["username_err"] = "username ini sudah diguankan.";
+                    $_SESSION["username_err"] = "username ini sudah digunakan.";
+                    
                 } else{
 
                     $username = trim($_POST["username"]);
@@ -54,9 +55,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 exit;
 
             }
+
+            $stmt->close();
+
         }
-         
-        mysqli_stmt_close($stmt);
+
     }
     
     if (empty(trim($_POST["password"]))) {
@@ -65,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     } else if (strlen(trim($_POST["password"])) < 6) {
 
-        $_SESSION["password_err"] = "Password minimal harus 6 karakter";
+        $_SESSION["password_err"] = "Password harus minimal 6 karakter";
 
     } else {
         $password = trim($_POST["password"]);
@@ -94,12 +97,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
          
         if ($stmt = mysqli_prepare($link, $sql)) {
 
-            mysqli_stmt_bind_param($stmt, "ss", $param_username, $param_password);
+            $stmt->bind_param("ss", $param_username, $param_password);
             
             $param_username = $username;
             $param_password = password_hash($password, PASSWORD_DEFAULT);
             
-            if (mysqli_stmt_execute($stmt)) {
+            if ($stmt->execute()) {
 
                 header("location: login.php");
 
@@ -109,13 +112,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 exit;
 
             }
+
+            $stmt->close();
+
         }
-         
-        mysqli_stmt_close($stmt);
+                 
     }
     
     mysqli_close($link);
-}
 
-header("location: register.php");
-exit;
+    header("location: register.php");
+    exit;
+
+}

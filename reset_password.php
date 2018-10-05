@@ -4,6 +4,11 @@ ini_set("display_errors", 1);
 
 session_start();
 
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: login.php");
+    exit;
+}
+
 $new_password = isset($_SESSION["new_password"]) ? $_SESSION["new_password"] : '';
 $confirm_password = isset($_SESSION["confirm_password"]) ? $_SESSION["confirm_password"] : '';
 
