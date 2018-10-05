@@ -12,3 +12,5 @@ if (empty($module)) {
 } else {
 	$module_file = "module" . "/" . $module . "/" . $module_array[$module_count - 1] . ".php";
 }
+
+$action = isset($_GET["action"]) ? $_GET["action"] : "";

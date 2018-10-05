@@ -1,58 +1,27 @@
-<p><a href="">Tambah</a></p>
+<?php
 
-<table width="100%" border="1" cellpadding="0" cellspacing="0">
+if ($action == "data") {
 
-	<tr>
-		<th>#</th>
-		<th>Id User</th>
-		<th>Username</th>
-		<th>Password</th>
-		<th>Email</th>
-		<th width="1">Aksi</th>
-	</tr>
+	require_once "data.php";
 
-	<?php
-	$sql = "
-		SELECT 
-			user_id, username, password, email_address 
-		FROM 
-			user
-	";
-	?>
+} else if ($action == "create") {
 
-	<?php if ($stmt = mysqli_prepare($link, $sql)) { ?>
+	require_once "form.php";
 
-		<?php if ($stmt->execute()) { ?>
+} else if ($action == "update") {
 
-			<?php $stmt->store_result(); ?>
+	require_once "form.php";
 
-			<?php if ($stmt->num_rows() > 0) { ?>
+} else if ($action == "delete") {
 
-				<?php $stmt->bind_result($user_id, $username, $password, $email_address); ?>
+	require_once "action.php";
 
-				<?php while ($row = $stmt->fetch()) { ?>
+} else if ($action == "save") {
 
-					<tr>
-						<td></td>
-						<td><?php echo $user_id; ?></td>
-						<td><?php echo $username; ?></td>
-						<td><?php echo $password; ?></td>
-						<td><?php echo $email_address; ?></td>
-						<td>
-							<select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-								<option value="">-PILIH-</option>
-								<option value="<?php echo "index.php?module=rbac/user&action=ubah&user_id=" . $user_id; ?>">Ubah</option>
-								<option value="">Hapus</option>
-							</select>
-						</td>
-					</tr>
+	require_once "action.php";
 
-				<?php } ?>
+} else {
 
-			<?php } ?>
+	require_once "data.php";
 
-		<?php } ?>
-
-	<?php }	?>
-
-</table>
+}
