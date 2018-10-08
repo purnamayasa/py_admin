@@ -1,27 +1,35 @@
 <?php
 
-if ($action == "data") {
+if (isset($rbac) && $rbac->hasPrivilege("rbac_user")) { 
 
-	require_once "data.php";
+	if ($action == "data") {
 
-} else if ($action == "create") {
+		require_once "data.php";
 
-	require_once "form.php";
+	} else if ($action == "create") {
 
-} else if ($action == "update") {
+		require_once "form.php";
 
-	require_once "form.php";
+	} else if ($action == "update") {
 
-} else if ($action == "delete") {
+		require_once "form.php";
 
-	require_once "action.php";
+	} else if ($action == "delete") {
 
-} else if ($action == "save") {
+		require_once "action.php";
 
-	require_once "action.php";
+	} else if ($action == "save") {
 
-} else {
+		require_once "action.php";
 
-	require_once "data.php";
+	} else {
+
+		require_once "data.php";
+
+	}
+
+} else { 
+
+	require_once "template/default/error_permission.php";
 
 }

@@ -1,10 +1,4 @@
 <?php
-
-ini_set("display_errors", 1);
-
-session_start();
-
-require_once "config/database.php";
  
 $username = "";
 $password = "";
@@ -68,7 +62,7 @@ if (isset($_POST["submit"]) && $_POST["submit"] == 'daftar') {
 
     } else if (strlen(trim($_POST["password"])) < 6) {
 
-        $_SESSION["password_err"] = "Password harus minimal 6 karakter";
+        $_SESSION["password_err"] = "Password harus minimal 6 karakter.";
 
     } else {
         $password = trim($_POST["password"]);
@@ -77,7 +71,7 @@ if (isset($_POST["submit"]) && $_POST["submit"] == 'daftar') {
     
     if (empty(trim($_POST["confirm_password"]))) {
 
-        $_SESSION["confirm_password_err"] = "Silahkan ketikan konfirmasi password Anda.";     
+        $_SESSION["confirm_password_err"] = "Silahkan ketikan ulang password Anda.";     
 
     } else {
 
@@ -86,7 +80,7 @@ if (isset($_POST["submit"]) && $_POST["submit"] == 'daftar') {
 
         if (empty($password_err) && ($password != $confirm_password)) {
 
-            $_SESSION["confirm_password_err"] = "Password tidak sama.";
+            $_SESSION["confirm_password_err"] = "Password yang Anda konfirmasi tidak sama.";
 
         }
     }
@@ -104,7 +98,8 @@ if (isset($_POST["submit"]) && $_POST["submit"] == 'daftar') {
             
             if ($stmt->execute()) {
 
-                header("location: login.php");
+                header("location: index.php?module=rbac/security&action=login");
+                exit;
 
             } else{
 
@@ -121,7 +116,7 @@ if (isset($_POST["submit"]) && $_POST["submit"] == 'daftar') {
     
     mysqli_close($link);
 
-    header("location: register.php");
+    header("location: index.php?module=rbac/security&action=register");
     exit;
 
 }

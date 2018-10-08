@@ -1,10 +1,4 @@
 <?php
-
-ini_set("display_errors", 1);
-
-session_start();
- 
-require_once "config/database.php";
  
 $username = "";
 $password = "";
@@ -96,7 +90,7 @@ if (isset($_POST["submit"]) && $_POST["submit"] == 'login') {
     
     mysqli_close($link);
 
-    header("location: login.php");
+    header("location: index.php?module/rbac/security&action=login");
     exit;
     
 }

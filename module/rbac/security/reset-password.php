@@ -1,14 +1,5 @@
 <?php
 
-ini_set("display_errors", 1);
-
-session_start();
-
-if (!isset($_SESSION["rbac_loggedin"]) || $_SESSION["rbac_loggedin"] !== true) {
-    header("location: login.php");
-    exit;
-}
-
 $new_password = isset($_SESSION["new_password"]) ? $_SESSION["new_password"] : '';
 $confirm_password = isset($_SESSION["confirm_password"]) ? $_SESSION["confirm_password"] : '';
 
@@ -20,7 +11,7 @@ $confirm_password_err = isset($_SESSION["confirm_password_err"]) ? $_SESSION["co
 
 <h2>Reset Password</h2>
 <p>Silahkan ketikkan informasi Anda untuk reset password.</p>
-<form action="reset_password_process.php" method="post"> 
+<form action="index.php?module=rbac/security&action=reset-password-process" method="post"> 
     <table>
         <tr>
             <td>Password baru</td>

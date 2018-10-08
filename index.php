@@ -5,34 +5,22 @@ ini_set("display_errors", 1);
 session_start();
 
 require_once "include/core.php";
- 
-if (!isset($_SESSION["rbac_loggedin"]) || $_SESSION["rbac_loggedin"] !== true) {
-    header("location: login.php");
-    exit;
-}
+require_once "include/security.php";
 
 require_once "template/default/header.php";
 
-if (isset($rbac) && $rbac->hasPrivilege("index")) { 
+if (empty($module_file)) {
 
-	if (empty($module_file)) {
+	require_once "template/default/welcome.php";
 
-		require_once "template/default/welcome.php";
+} else if (file_exists($module_file)) {
 
-	} else if (file_exists($module_file)) {
+	require_once $module_file;
 
-		require_once $module_file;
+} else {
 
-	} else {
+	require_once "template/default/error_404.php";
 
-		require_once "template/default/error_404.php";
-
-	}
-
-} else { 
-
-	require_once "template/default/error_permission.php";
-
-} 
+}
 
 require_once "template/default/footer.php";

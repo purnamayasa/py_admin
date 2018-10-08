@@ -1,42 +1,35 @@
-<table>
-	<tr>
-		<th>#</th>
-		<th>Id Permissi</th>
-		<th>Nama Permisi</th>
-	</tr>
+<?php
 
-	<?php
-	$sql = "SELECT user_id, username, password FROM user";
-        
-    if ($stmt = mysqli_prepare($link, $sql)) {
-       
-        
-        if (mysqli_stmt_execute($stmt)) {
+if (isset($rbac) && $rbac->hasPrivilege("rbac_permission")) { 
 
-            mysqli_stmt_store_result($stmt);
-            
-            if (mysqli_stmt_num_rows($stmt) > 0) {     
+    if ($action == "data") {
 
-                mysqli_stmt_bind_result($stmt, $user_id, $username, $hashed_password);
+        require_once "data.php";
 
-                if (mysqli_stmt_fetch($stmt)) {
+    } else if ($action == "create") {
 
-                    
-                }
-            } else {
+        require_once "form.php";
 
-                $_SESSION["username_err"] = "Tidak ditemukan login dengan username ini.";
+    } else if ($action == "update") {
 
-            }
-        } else {
+        require_once "form.php";
 
-            echo "Terjadi kesalahan, silahkan coba lagi!.";
-            exit;
+    } else if ($action == "delete") {
 
-        }
+        require_once "action.php";
+
+    } else if ($action == "save") {
+
+        require_once "action.php";
+
+    } else {
+
+        require_once "data.php";
+
     }
-    
-    mysqli_stmt_close($stmt);
-    ?>
-    
-</table>
+
+} else { 
+
+    require_once "template/default/error_permission.php";
+
+}

@@ -1,9 +1,5 @@
 <?php
 
-ini_set("display_errors", 1);
-
-session_start();
-
 $username = isset($_SESSION["username"]) ? $_SESSION["username"] : '';
 $password = isset($_SESSION["password"]) ? $_SESSION["password"] : '';
 $confirm_password = isset($_SESSION["confirm_password"]) ? $_SESSION["confirm_password"] : '';
@@ -17,7 +13,7 @@ $confirm_password_err = isset($_SESSION["confirm_password_err"]) ? $_SESSION["co
 
 <h2>Daftar</h2>
 <p>Silahkan ketik informasi Anda untuk membuat akun.</p>
-<form action="register_process.php" method="post">
+<form action="index.php?module=rbac/security&action=register-process" method="post">
     <table>
         <tr>
             <td>Username</td>
@@ -52,7 +48,7 @@ $confirm_password_err = isset($_SESSION["confirm_password_err"]) ? $_SESSION["co
             </td>
         </tr>
     </table>
-    <p>Sudah punya akun? <a href="login.php">Login disini</a>.</p>
+    <p>Sudah punya akun? <a href="index.php?module/rbac/security&action=login">Login disini</a>.</p>
 </form>
 
 <?php require_once "template/default/footer.php"; ?>
