@@ -1,10 +1,5 @@
 <?php
 
-$security = array(
-	"rbac/security"
-);
-
-
 if (isset($_SESSION["rbac_loggedin"]) && $_SESSION["rbac_loggedin"] !== true) {
 
 	if ($module == "rbac/security") {

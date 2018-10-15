@@ -4,45 +4,62 @@ if ($action == "save") {
 
 	if (isset($_POST["submit"]) && $_POST["submit"] == 'save') {
 
+		$_SESSION["user_id"] = isset($_GET["user_id"]) ? $_GET["user_id"] : "";
+
+		$_SESSION["username"] = "";
+		$_SESSION["password"] = "";
+		$_SESSION["confirm_password"] = "";
+
+		$_SESSION["username_err"] = "";
+		$_SESSION["password_err"] = "";
+		$_SESSION["confirm_password_err"] = "";
+
 		if (empty(trim($_POST["username"]))) {
 
         	$_SESSION["username_err"] = "Silahkan ketikan username Anda.";
 
 	    } else {
 
-	        $sql = "SELECT user_id FROM user WHERE username = ?";
+	    	if ($_GET["form"] === "create") {
+
+	    		$sql = "SELECT user_id FROM user WHERE username = ? LIMIT 1";
 	        
-	        if ($stmt = mysqli_prepare($link, $sql)) {
+		        if ($stmt = mysqli_prepare($link, $sql)) {
 
-	            $stmt->bind_param("s", $param_username);
-	            
-	            $param_username = trim($_POST["username"]);
-	            
-	            if ($stmt->execute()) {
+		            $stmt->bind_param("s", $param_username);
+		            
+		            $param_username = trim($_POST["username"]);
+		            
+		            if ($stmt->execute()) {
 
-	                $stmt->store_result();
-	                
-	                if ($stmt->num_rows() == 1) {
+		                $stmt->store_result();
+		                
+		                if ($stmt->num_rows() > 0) {
 
-	                    $_SESSION["username_err"] = "username ini sudah digunakan.";
-	                    
-	                } else{
+		                    $_SESSION["username_err"] = "username ini sudah digunakan.";
+		                    
+		                } else{
 
-	                    $username = trim($_POST["username"]);
-	                    $_SESSION["username"] = $username;
+		                    $_SESSION["username"] = trim($_POST["username"]);
 
-	                }
+		                }
 
-	            } else{
+		            } else{
 
-	                echo "Terjadi kesalahan, silahkan coba lagi!.";
-	                exit;
+		                echo "Terjadi kesalahan, silahkan coba lagi!.";
+		                exit;
 
-	            }
+		            }
 
-	            $stmt->close();
+		            $stmt->close();
 
-	        }
+		        }
+
+	    	} else if ($_GET["form"] === "update") {
+
+	    		$_SESSION["username"] = trim($_POST["username"]);
+
+	    	}
 
 	    }
 	    
@@ -55,8 +72,9 @@ if ($action == "save") {
 	        $_SESSION["password_err"] = "Password harus minimal 6 karakter";
 
 	    } else {
-	        $password = trim($_POST["password"]);
-	        $_SESSION["password"] = $password;
+
+	        $_SESSION["password"] = trim($_POST["password"]);
+	    
 	    }
 	    
 	    if (empty(trim($_POST["confirm_password"]))) {
@@ -65,10 +83,9 @@ if ($action == "save") {
 
 	    } else {
 
-	        $confirm_password = trim($_POST["confirm_password"]);
-	        $_SESSION["confirm_password"] = $confirm_password;
+	        $_SESSION["confirm_password"] = trim($_POST["confirm_password"]);
 
-	        if (empty($password_err) && ($password != $confirm_password)) {
+	        if ($_SESSION["password"] != $_SESSION["confirm_password"]) {
 
 	            $_SESSION["confirm_password_err"] = "Password tidak sama.";
 
@@ -76,36 +93,77 @@ if ($action == "save") {
 	    }
 
 		if (empty($_SESSION["username_err"]) && empty($_SESSION["password_err"]) && empty($_SESSION["confirm_password_err"])) {
-        
-	        $sql = "INSERT INTO user (username, password) VALUES (?, ?)";
+
+			if ($_GET["form"] === "create") {
+
+				$sql = "INSERT INTO user (username, password) VALUES (?, ?)";
 	         
-	        if ($stmt = mysqli_prepare($link, $sql)) {
+		        if ($stmt = mysqli_prepare($link, $sql)) {
 
-	            $stmt->bind_param("ss", $param_username, $param_password);
-	            
-	            $param_username = $username;
-	            $param_password = password_hash($password, PASSWORD_DEFAULT);
-	            
-	            if ($stmt->execute()) {
+		            $stmt->bind_param("ss", $param_username, $param_password);
+		            
+		            $param_username = $_SESSION["username"];
+		            $param_password = password_hash($_SESSION["password"], PASSWORD_DEFAULT);
+		            
+		            if ($stmt->execute()) {
 
-	                header("location: login.php");
+		                header("location: index.php?module=rbac/user&action=data");
+		                exit;
 
-	            } else{
+		            } else{
 
-	                echo "Terjadi kesalahan, silahkan coba lagi!.";
-	                exit;
+		                echo "Terjadi kesalahan, silahkan coba lagi!.";
+		                exit;
 
-	            }
+		            }
 
-	            $stmt->close();
+		            $stmt->close();
 
-	        }
+		        }
+
+			} else if ($_GET["form"] === "update") {
+
+				$sql = "UPDATE user  SET password = ? WHERE user_id = ?";
+	         
+		        if ($stmt = mysqli_prepare($link, $sql)) {
+
+		            $stmt->bind_param("si", $param_password, $param_user_id);
+		            		            
+		            $param_password = password_hash($_SESSION["password"], PASSWORD_DEFAULT);
+		            $param_user_id = $_SESSION["user_id"];
+		            
+		            if ($stmt->execute()) {
+
+		                header("location: index.php?module=rbac/user&action=data");
+		                exit;
+
+		            } else{
+
+		                echo "Terjadi kesalahan, silahkan coba lagi!.";
+		                exit;
+
+		            }
+
+		            $stmt->close();
+
+		        }
+
+			}
 	                 
 	    }
 	    
 	    mysqli_close($link);
 
-	    header("location: register.php");
+	    if ($_GET["form"] === "create") {
+	    	
+	    	header("location: index.php?module=rbac/user&action=create&user_id=" . $_SESSION["user_id"]);
+
+	    } else if ($_GET["form"] === "update") {
+
+	    	header("location: index.php?module=rbac/user&action=update&user_id=" . $_SESSION["user_id"]);
+
+	    }
+
 	    exit;
 
 	}

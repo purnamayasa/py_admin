@@ -1,4 +1,8 @@
-<p><a href="<?php echo "index.php?module=rbac/user&action=create"; ?>">Tambah</a></p>
+<?php if ($rbac->hasPrivilege("rbac.user.crud.create")) { ?>
+
+	<?php crud_data_button_create("index.php?module=rbac/user&action=create"); ?>
+
+<?php } ?>
 
 <table width="100%" border="1" cellpadding="0" cellspacing="0">
 
@@ -14,10 +18,14 @@
 	<?php
 	$sql = "
 		SELECT 
-			user_id, username, password, email_address 
+			t1.user_id, t1.username, t1.password, t1.email_address 
 		FROM 
-			user
+			user AS t1
+		ORDER BY
+			t1.username
 	";
+
+	$no = 1;
 	?>
 
 	<?php if ($stmt = mysqli_prepare($link, $sql)) { ?>
@@ -33,21 +41,39 @@
 				<?php while ($row = $stmt->fetch()) { ?>
 
 					<tr>
-						<td></td>
+						<td><?php echo $no++; ?></td>
 						<td><?php echo $user_id; ?></td>
 						<td><?php echo $username; ?></td>
 						<td><?php echo $password; ?></td>
 						<td><?php echo $email_address; ?></td>
 						<td>
 							<select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-								<option value="">-PILIH-</option>
-								<option value="<?php echo "index.php?module=rbac/user&action=update&user_id=" . $user_id; ?>">Ubah</option>
-								<option value="">Hapus</option>
+								<?php 
+								crud_data_option_select();
+								
+								if ($rbac->hasPrivilege("rbac.user.crud.update")) {
+								
+									crud_data_option_update("index.php?module=rbac/user&action=update&user_id=" . $user_id);
+								
+								}
+
+								if ($rbac->hasPrivilege("rbac.user.crud.delete")) {
+								
+									crud_data_option_delete("index.php?module=rbac/user&action=delete&user_id=" . $user_id);
+
+								} 
+								?>
 							</select>
 						</td>
 					</tr>
 
 				<?php } ?>
+
+			<?php }  else { ?>
+
+				<tr>
+					<td colspan="6">Data tidak ditemukan</td>
+				</tr>
 
 			<?php } ?>
 

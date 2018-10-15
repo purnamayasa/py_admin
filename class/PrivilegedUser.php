@@ -6,8 +6,10 @@ class PrivilegedUser extends User
     private $roles;
 
     public function __construct($link) {
-        parent::__construct();
+
+        parent::__construct($link);
         $this->link = $link;
+        
     }
 
     public function getByUsername($username) {
@@ -112,7 +114,9 @@ class PrivilegedUser extends User
                     $role = new Role($this->link);
 
                     while($stmt->fetch()) {
+
                         $this->roles[$role_name] = $role->getRolePerms($role_id);
+                        
                     }
 
                 } else {

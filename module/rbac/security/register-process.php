@@ -1,12 +1,9 @@
 <?php
  
-$username = "";
-$password = "";
-$confirm_password = "";
-
 $_SESSION["username"] = "";
 $_SESSION["password"] = "";
 $_SESSION["confirm_password"] = "";
+
 $_SESSION["username_err"] = "";
 $_SESSION["password_err"] = "";
 $_SESSION["confirm_password_err"] = "";
@@ -38,8 +35,7 @@ if (isset($_POST["submit"]) && $_POST["submit"] == 'daftar') {
                     
                 } else{
 
-                    $username = trim($_POST["username"]);
-                    $_SESSION["username"] = $username;
+                    $_SESSION["username"] = trim($_POST["username"]);
 
                 }
 
@@ -65,8 +61,9 @@ if (isset($_POST["submit"]) && $_POST["submit"] == 'daftar') {
         $_SESSION["password_err"] = "Password harus minimal 6 karakter.";
 
     } else {
-        $password = trim($_POST["password"]);
-        $_SESSION["password"] = $password;
+
+        $_SESSION["password"] = trim($_POST["password"]);
+    
     }
     
     if (empty(trim($_POST["confirm_password"]))) {
@@ -75,10 +72,9 @@ if (isset($_POST["submit"]) && $_POST["submit"] == 'daftar') {
 
     } else {
 
-        $confirm_password = trim($_POST["confirm_password"]);
-        $_SESSION["confirm_password"] = $confirm_password;
+        $_SESSION["confirm_password"] = trim($_POST["confirm_password"]);
 
-        if (empty($password_err) && ($password != $confirm_password)) {
+        if ($_SESSION["password"] != $_SESSION["confirm_password"]) {
 
             $_SESSION["confirm_password_err"] = "Password yang Anda konfirmasi tidak sama.";
 
@@ -93,8 +89,8 @@ if (isset($_POST["submit"]) && $_POST["submit"] == 'daftar') {
 
             $stmt->bind_param("ss", $param_username, $param_password);
             
-            $param_username = $username;
-            $param_password = password_hash($password, PASSWORD_DEFAULT);
+            $param_username = $_SESSION["username"];
+            $param_password = password_hash($_SESSION["password"], PASSWORD_DEFAULT);
             
             if ($stmt->execute()) {
 
